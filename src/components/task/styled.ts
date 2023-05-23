@@ -1,3 +1,4 @@
+import { TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 
 type TaskTextProps = {
@@ -6,16 +7,22 @@ type TaskTextProps = {
 
 export const Container = styled.View`
   height: 64px;
-  width: 341px;
 
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   flex-direction: row;
 
   border-radius: 6px;
   margin-bottom: 8px;
+  padding-left: 15px;
 
   background: ${({ theme }) => theme.colors.gray[500]};
+  border: 1px solid ${({ theme }) => theme.colors.gray[400]};
+`
+
+export const AddTaskButton = styled(TouchableOpacity)`
+  flex-direction: row;
+  align-items: center;
 `
 
 export const TaskText = styled.Text<TaskTextProps>`
