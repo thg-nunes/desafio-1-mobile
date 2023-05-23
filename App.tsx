@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alert, FlatList, StatusBar, Text } from 'react-native'
+import { Alert, FlatList, StatusBar } from 'react-native'
 import styled, { ThemeProvider } from 'styled-components/native'
 import {
   useFonts,
@@ -9,9 +9,11 @@ import {
 
 import { theme } from './src/theme'
 import { Task } from '@components/task'
+import { Info } from '@components/info'
 import { Input } from '@components/input'
 import { Header } from '@components/header'
 import { Button } from '@components/button'
+import { EmptyList } from '@components/emptyList'
 
 const Container = styled.View`
   flex: 1;
@@ -26,6 +28,22 @@ const Form = styled.View`
   flex-direction: row;
 `
 
+const HeaderTasksStyle = styled.View`
+  margin: 32px 0 12px;
+
+  flex-direction: row;
+  justify-content: space-between;
+
+  width: 100%;
+`
+
+const ContainerTasks = styled.View`
+  flex: 1;
+  width: 100%;
+
+  padding: 0 24px;
+`
+
 export default function App() {
   const [fontsLoaded] = useFonts({ Inter_400Regular, Inter_700Bold })
 
@@ -35,6 +53,7 @@ export default function App() {
 
   function handleRemoveTask(taskName: string): void {
     setTasks(tasks.filter((_task) => _task !== taskName))
+    setCompletedTasks((prevestate) => prevestate - 1)
   }
 
   function handleAddTask(taskName: string): void {
@@ -47,7 +66,7 @@ export default function App() {
 
     if (taskDescription === '') {
       return Alert.alert(
-        'Uma tarefa de uma descrição!',
+        'Uma tarefa precisa de uma descrição!',
         'Não é possível criar uma tarefa sem uma descrição.'
       )
     }
@@ -67,20 +86,29 @@ export default function App() {
             <Button onPress={() => handleAddTask(taskDescription)} />
           </Form>
 
-          <Text style={{ color: '#FFF' }}>Criadas {tasks.length}</Text>
-          <Text style={{ color: '#FFF' }}>Concluidas {completedTasks}</Text>
-          <FlatList
-            data={tasks}
-            keyExtractor={(item) => item}
-            renderItem={({ item }) => (
-              <Task
-                taskText={item}
-                completedTasks={completedTasks}
-                setCompletedTasks={setCompletedTasks}
-                removeTask={() => handleRemoveTask(item)}
+          <ContainerTasks>
+            <HeaderTasksStyle>
+              <Info TaskQuantity={tasks.length} taskDescription="Criadas" />
+              <Info
+                taskType="SECONDARY"
+                taskDescription="Concluídas"
+                TaskQuantity={completedTasks}
               />
-            )}
-          />
+            </HeaderTasksStyle>
+            <FlatList
+              data={tasks}
+              keyExtractor={(item) => item}
+              renderItem={({ item }) => (
+                <Task
+                  taskText={item}
+                  completedTasks={completedTasks}
+                  setCompletedTasks={setCompletedTasks}
+                  removeTask={() => handleRemoveTask(item)}
+                />
+              )}
+              ListEmptyComponent={EmptyList}
+            />
+          </ContainerTasks>
         </Container>
       )}
     </ThemeProvider>
