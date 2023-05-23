@@ -4,10 +4,12 @@ export const Container = styled.View`
   height: 208px;
 
   gap: 16px;
-  padding: 20px 48px;
 
   align-items: center;
   justify-content: center;
+
+  border-top-width: 1px;
+  border-top-color: #333333;
 `
 
 export const MessageContainer = styled.View`
