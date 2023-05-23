@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { TextInputProps } from 'react-native'
 import { useTheme } from 'styled-components/native'
 
@@ -9,9 +10,13 @@ export type InputProps = TextInputProps & {
 
 export const Input = ({ onChangeText }: InputProps): JSX.Element => {
   const { colors } = useTheme()
+  const [inputInFocus, setInputInFocus] = useState(false)
 
   return (
     <Styled.Container
+      onFocus={() => setInputInFocus(true)}
+      onBlur={() => setInputInFocus(false)}
+      inputInFocus={inputInFocus}
       onChangeText={onChangeText}
       placeholder="Adicione uma nova tarefa"
       placeholderTextColor={colors.gray[300]}
