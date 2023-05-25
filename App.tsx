@@ -53,7 +53,11 @@ export default function App() {
 
   function handleRemoveTask(taskName: string): void {
     setTasks(tasks.filter((_task) => _task !== taskName))
-    setCompletedTasks((prevestate) => prevestate - 1)
+    if (completedTasks > 0) {
+      setCompletedTasks((prevestate) => prevestate - 1)
+    } else {
+      setCompletedTasks(0)
+    }
   }
 
   function handleAddTask(taskName: string): void {
